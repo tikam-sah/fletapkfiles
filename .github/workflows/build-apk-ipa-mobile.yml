@@ -1,4 +1,4 @@
-name: Build APK
+name: Build APK with Flet CLI
 
 on:
   push:
@@ -19,27 +19,27 @@ jobs:
       with:
         python-version: '3.10'
 
-    - name: Install Dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install flet buildozer
-
     - name: Install Buildozer Dependencies
       run: |
         sudo apt update
         sudo apt install -y build-essential python3-dev libffi-dev \
             libssl-dev git libncurses5 libncurses5-dev \
-            libreadline6 libreadline6-dev libsqlite3-dev \
+            libreadline-dev libsqlite3-dev \
             wget curl llvm libncursesw5-dev xz-utils \
             tk-dev libxml2-dev libxmlsec1-dev libbz2-dev zlib1g-dev \
             openjdk-8-jdk unzip
 
-    - name: Build APK
+    - name: Install Flet and Dependencies
       run: |
-        buildozer android debug
+        python -m pip install --upgrade pip
+        pip install flet
+        pip install -r requirements.txt
+
+    - name: Build APK
+      run: flet build apk
 
     - name: Upload APK
       uses: actions/upload-artifact@v3
       with:
-        name: app-debug.apk
-        path: bin/*.apk
+        name: app-release.apk
+        path: build/*.apk
