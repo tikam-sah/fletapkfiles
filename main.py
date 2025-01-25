@@ -2,8 +2,8 @@ import flet as ft
 import requests as req
 import define as d
 
-API_TOKEN_URL = '/lead_token'
-API_LOGIN_URL = '/agents_login'
+API_TOKEN_URL = 'https://marketing.binayahcapital.com/api/lead_token'
+API_LOGIN_URL = 'https://marketing.binayahcapital.com/api/agents_login'
 
 def get_api_token():
     response = req.post(API_TOKEN_URL)
