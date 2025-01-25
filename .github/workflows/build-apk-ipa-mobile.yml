@@ -3,7 +3,7 @@ name: Build APK for Flet App
 on:
   push:
     branches:
-      - main
+      - main  # Trigger the workflow on a push to the main branch
 
 jobs:
   build-apk:
@@ -27,7 +27,7 @@ jobs:
         pip install cython
         pip install -r requirements.txt
 
-    # Step 4: Install Android SDK (Non-Sudo)
+    # Step 4: Install Android SDK
     - name: Install Android SDK
       run: |
         mkdir -p $HOME/android-sdk/cmdline-tools
@@ -36,8 +36,7 @@ jobs:
         mv $HOME/android-sdk/cmdline-tools/cmdline-tools $HOME/android-sdk/cmdline-tools/latest
         export ANDROID_HOME=$HOME/android-sdk
         export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH
-      env:
-        PATH: $HOME/android-sdk/cmdline-tools/latest/bin:$HOME/android-sdk/platform-tools:$PATH
+      shell: bash
 
     # Step 5: Accept Android SDK Licenses
     - name: Accept Android SDK Licenses
