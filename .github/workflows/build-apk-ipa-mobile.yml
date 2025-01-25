@@ -36,6 +36,7 @@ jobs:
         mv $HOME/android-sdk/cmdline-tools/cmdline-tools $HOME/android-sdk/cmdline-tools/latest
         export ANDROID_HOME=$HOME/android-sdk
         export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH
+        sdkmanager --install "platform-tools" "platforms;android-31" "build-tools;31.0.0"
       shell: bash
 
     # Step 5: Accept Android SDK Licenses
@@ -58,6 +59,8 @@ jobs:
     # Step 8: Build APK
     - name: Build APK
       run: |
+        export ANDROID_HOME=$HOME/android-sdk
+        export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH
         buildozer -v android debug
         mkdir -p build-output
         cp bin/*.apk build-output/
