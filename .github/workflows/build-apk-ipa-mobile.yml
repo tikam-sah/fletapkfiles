@@ -3,7 +3,7 @@ name: Build APK for Flet App
 on:
   push:
     branches:
-      - main  #
+      - main  # Trigger on push to the main branch
 
 jobs:
   build-apk:
@@ -24,6 +24,7 @@ jobs:
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
+        pip install cython  # Install Cython
         pip install -r requirements.txt
 
     # Step 4: Install Buildozer and Dependencies
@@ -44,7 +45,7 @@ jobs:
         buildozer -v android debug
         mkdir -p build-output
         cp bin/*.apk build-output/
-    
+
     # Step 7: Upload APK to GitHub Artifacts
     - name: Upload APK
       uses: actions/upload-artifact@v3
