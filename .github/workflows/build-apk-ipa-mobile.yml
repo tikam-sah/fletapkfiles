@@ -34,19 +34,24 @@ jobs:
         sudo apt install -y build-essential libssl-dev libffi-dev python3-dev
         pip install buildozer
 
-    # Step 5: Initialize Buildozer
+    # Step 5: Accept Android SDK Licenses
+    - name: Accept Android SDK Licenses
+      run: |
+        yes | sdkmanager --licenses
+
+    # Step 6: Initialize Buildozer
     - name: Initialize Buildozer
       run: |
         buildozer init
 
-    # Step 6: Build APK
+    # Step 7: Build APK
     - name: Build APK
       run: |
         buildozer -v android debug
         mkdir -p build-output
         cp bin/*.apk build-output/
 
-    # Step 7: Upload APK to GitHub Artifacts
+    # Step 8: Upload APK to GitHub Artifacts
     - name: Upload APK
       uses: actions/upload-artifact@v3
       with:
