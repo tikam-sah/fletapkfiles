@@ -3,7 +3,7 @@ name: Build APK for Flet App
 on:
   push:
     branches:
-      - main  # Trigger on push to the main branch
+      - main  #
 
 jobs:
   build-apk:
