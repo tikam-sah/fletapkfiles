@@ -3,7 +3,7 @@ name: Build APK for Flet App
 on:
   push:
     branches:
-      - main  # Trigger on push to the main branch
+      - main
 
 jobs:
   build-apk:
@@ -20,38 +20,35 @@ jobs:
       with:
         python-version: 3.9
 
-    # Step 3: Install Dependencies
+    # Step 3: Install Python Dependencies
     - name: Install Python Dependencies
       run: |
         python -m pip install --upgrade pip
         pip install cython
         pip install -r requirements.txt
 
-    # Step 4: Install Android SDK
+    # Step 4: Install Android SDK (Non-Sudo)
     - name: Install Android SDK
       run: |
-        sudo apt-get update
-        sudo apt-get install -y wget unzip openjdk-11-jdk
-        wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline-tools.zip
         mkdir -p $HOME/android-sdk/cmdline-tools
+        wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline-tools.zip
         unzip cmdline-tools.zip -d $HOME/android-sdk/cmdline-tools
         mv $HOME/android-sdk/cmdline-tools/cmdline-tools $HOME/android-sdk/cmdline-tools/latest
-        echo "export ANDROID_HOME=$HOME/android-sdk" >> $HOME/.bashrc
-        echo "export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH" >> $HOME/.bashrc
-        source $HOME/.bashrc
+        export ANDROID_HOME=$HOME/android-sdk
+        export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH
       env:
         PATH: $HOME/android-sdk/cmdline-tools/latest/bin:$HOME/android-sdk/platform-tools:$PATH
 
     # Step 5: Accept Android SDK Licenses
     - name: Accept Android SDK Licenses
       run: |
-        yes | $HOME/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses
+        export ANDROID_HOME=$HOME/android-sdk
+        export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$PATH
+        yes | sdkmanager --licenses
 
     # Step 6: Install Buildozer
     - name: Install Buildozer
       run: |
-        sudo apt-get update
-        sudo apt-get install -y build-essential libssl-dev libffi-dev python3-dev
         pip install buildozer
 
     # Step 7: Initialize Buildozer
@@ -66,7 +63,7 @@ jobs:
         mkdir -p build-output
         cp bin/*.apk build-output/
 
-    # Step 9: Upload APK to GitHub Artifacts
+    # Step 9: Upload APK
     - name: Upload APK
       uses: actions/upload-artifact@v3
       with:
