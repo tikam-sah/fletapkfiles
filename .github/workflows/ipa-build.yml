@@ -48,7 +48,11 @@ jobs:
     - name: Flet Build IPA
       run: |
         flutter config --no-analytics
-        flet build ipa --verbose --build-number=$BUILD_NUMBER --build-version=$BUILD_VERSION
+        flet build ipa --project "leads" --description "Binayah Leads APP" --product "Binayah Leads" --org "com.binayah" --company "Binayah Properties" --copyright "2025 Binayah Properties" --splash-color "#ffffff" --splash-dark-color "#000000" --build-number=$BUILD_NUMBER --build-version=$BUILD_VERSION 
+
+        #flet build ipa --verbose --build-number=$BUILD_NUMBER --build-version=$BUILD_VERSION
+
+        #flet build ipa --project "leads" --description "Binayah Leads APP" --product "Binayah Leads" --org "com.binayah" --company "Binayah Properties" --copyright "2025 Binayah Properties" --splash-color "#ffffff" --splash-dark-color "#000000" --build-number 1 --build-version "1.0.0" --team "YOUR_APPLE_TEAM_ID"
 
     - name: Upload IPA Artifact
       uses: actions/upload-artifact@v4.3.4  # https://github.com/marketplace/actions/upload-a-build-artifact
